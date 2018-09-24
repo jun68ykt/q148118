@@ -4,9 +4,16 @@
   <meta charset="utf-8">
   <style></style>
   <script>
-    var Point = function(x, y) {
+
+    const NUMBER_OF_POINTS = 3;
+
+    const Point = function(x, y) {
       this.x = x;
       this.y = y;
+    };
+
+    Point.prototype.toString = function() {
+      return `x: ${this.x}, y: ${this.y}`;
     };
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -18,42 +25,51 @@
         );
       }
 
-      // 与えられた複数のPointの座標をinput要素のvalueに反映
-      function displayCoordinates(points) {
+      // 与えられた複数のPointの座標をHTMLに反映
+      function renderPoints(points) {
+
+        // 対応する <input>の valueに設定
         ['x', 'y'].forEach(function(axis) {
-          var inputs = document.getElementsByClassName(axis)
-          for (var i=0; i < inputs.length && i < points.length; i ++ )
+          const inputs = document.getElementsByClassName(axis);
+          for (let i=0; i < inputs.length && i < points.length; i ++ )
             inputs[i].value = points[i][axis];
         });
+
+        // <form> のdata-points属性にpointsをJSONにした文字列を設定
+        const form = document.getElementById('fm');
+        form.dataset.points = JSON.stringify(points);
       }
 
-      // 重心の計算と表示
-      function calcCenterOfGravity() {
-
-        var x0 = parseFloat(document.getElementById('x0').value);
-        var x1 = parseFloat(document.getElementById('x1').value);
-        var x2 = parseFloat(document.getElementById('x2').value);
-        var y0 = parseFloat(document.getElementById('y0').value);
-        var y1 = parseFloat(document.getElementById('y1').value);
-        var y2 = parseFloat(document.getElementById('y2').value);
-
-        // 重心の計算と表示
-        const g = [];
-        const gx = (x0 + x1 + x2) / 3;
-        const gy = (y0 + y1 + y2) / 3;
-        g.push(gx);
-        g.push(gy);
-        alert(g);
+      // 重心の取得
+      function getCenterOfGravity(points) {
+        if (!points || !points.length)
+          return null;
+        else return new Point(
+          points.reduce((sum,p) => sum + p.x, 0) / points.length,
+          points.reduce((sum,p) => sum + p.y, 0) / points.length
+        );
       }
+
+      // generateボタンにclickハンドラを設定
+      document.getElementById('Generate').addEventListener('click',
+        function() {
+          const randomPoints = generateRandomPoints(NUMBER_OF_POINTS);
+          renderPoints(randomPoints);
+        }
+      );
 
       // solveボタンにclickハンドラを設定
-      document.getElementById('Atk').addEventListener('click', calcCenterOfGravity);
+      document.getElementById('Atk').addEventListener('click',
+        function() {
+          const form = document.getElementById('fm');
+          if (form.dataset.points) {
+            const points = JSON.parse(form.dataset.points);
+            const g = getCenterOfGravity(points);
+            alert(g);
+          }
+        }
+      );
 
-      // 初期表示時のランダム座標生成
-      var randomPoints = generateRandomPoints(3);
-
-      // 座標の表示
-      displayCoordinates(randomPoints);
     });
   </script>
 </head>
@@ -69,6 +85,7 @@
     <input type="number" size="10" id="x2" class="x" placeholder="x2">,
     <input type="number" size="10" id="y2" class="y" placeholder="y2">)<br>
   </form>
+  <input type="button" id="Generate" value="generate">&nbsp;
   <input type="button" id="Atk" value="solve">
 </body>
 </html>
