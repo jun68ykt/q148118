@@ -1,75 +1,54 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="utf-8">
-    <style></style>
+  <meta charset="utf-8">
+  <style></style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function atk() {
+
+        var arr = [];
+
+        for (k = 0; k < 3; k++) {
+
+          var p = (Math.random() * 1000);
+          var q = (Math.random() * 1000);
+
+          document.getElementById(`x${k}`).value = p;
+          document.getElementById(`y${k}`).value = q;
+          arr.push({x: p, y: q});
+        }
+
+        var x0 = parseFloat(document.getElementById('x0').value);
+        var x1 = parseFloat(document.getElementById('x1').value);
+        var x2 = parseFloat(document.getElementById('x2').value);
+        var y0 = parseFloat(document.getElementById('y0').value);
+        var y1 = parseFloat(document.getElementById('y1').value);
+        var y2 = parseFloat(document.getElementById('y2').value);
+
+        //g
+        const g = [];
+        const gx = (x0 + x1 + x2) / 3;
+        const gy = (y0 + y1 + y2) / 3;
+        g.push(gx);
+        g.push(gy);
+        alert(g);
+      }
+    });
+  </script>
 </head>
 <body>
-
-<script>
-  function atk() {
-
-    var fm = document.getElementById('fm');
-    fm.innerHTML = "";
-
-    var arr = [];
-
-    for (k = 0; k < 3; k++) {
-      var inputX = document.createElement('input');
-      inputX.type = 'number';
-      inputX.size = 10;
-      inputX.id = `x${k}`;
-      inputX.placeholder = `x${k}`;
-
-      var inputY = document.createElement('input');
-      inputY.type = 'number';
-      inputY.size = 10;
-      inputY.id = `y${k}`;
-      inputY.placeholder = `y${k}`;
-      inputY.value = `y${k}`;
-
-      var br = document.createElement('br');
-
-      var before = document.createTextNode(`p${k}(`);
-      var comma = document.createTextNode(',');
-      var after = document.createTextNode(')');
-
-      fm.append(before);
-      fm.append(inputX);
-      fm.append(comma);
-      fm.append(inputY);
-      fm.append(after);
-      fm.append(br);
-
-      var p = (Math.random() * 1000);
-      var q = (Math.random() * 1000);
-
-      document.getElementById(`x${k}`).value = p;
-      document.getElementById(`y${k}`).value = q;
-      arr.push({x: p, y: q});
-    }
-
-    var x0 = parseFloat(document.getElementById('x0').value);
-    var x1 = parseFloat(document.getElementById('x1').value);
-    var x2 = parseFloat(document.getElementById('x2').value);
-    var y0 = parseFloat(document.getElementById('y0').value);
-    var y1 = parseFloat(document.getElementById('y1').value);
-    var y2 = parseFloat(document.getElementById('y2').value);
-
-    //g
-    const g = [];
-    const gx = (x0 + x1 + x2) / 3;
-    const gy = (y0 + y1 + y2) / 3;
-    g.push(gx);
-    g.push(gy);
-    alert(g);
-  }
-
-</script>
-
-<form id="fm"></form>
-<input type="button" id="Atk" onclick="atk()" value="solve">
-
-
+  <form id="fm">
+    p0(
+    <input type="number" size="10" id="x0" placeholder="x0">,
+    <input type="number" size="10" id="y0" placeholder="y0">)<br>
+    p1(
+    <input type="number" size="10" id="x1" placeholder="x1">,
+    <input type="number" size="10" id="y1" placeholder="y1">)<br>
+    p2(
+    <input type="number" size="10" id="x2" placeholder="x2">,
+    <input type="number" size="10" id="y2" placeholder="y2">)<br>
+  </form>
+  <input type="button" id="Atk" onclick="atk()" value="solve">
 </body>
 </html>
