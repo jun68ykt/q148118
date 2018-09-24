@@ -4,20 +4,26 @@
   <meta charset="utf-8">
   <style></style>
   <script>
+    var Point = function(x, y) {
+      this.x = x;
+      this.y = y;
+    };
+
     document.addEventListener('DOMContentLoaded', function() {
-      function atk() {
 
-        var arr = [];
-
+      // 乱数を使ってランダムな座標を生成
+      function generateRandomPoints() {
         for (k = 0; k < 3; k++) {
 
-          var p = (Math.random() * 1000);
-          var q = (Math.random() * 1000);
+          var point = new Point(Math.random() * 1000, Math.random() * 1000);
 
-          document.getElementById(`x${k}`).value = p;
-          document.getElementById(`y${k}`).value = q;
-          arr.push({x: p, y: q});
+          document.getElementById(`x${k}`).value = point.x;
+          document.getElementById(`y${k}`).value = point.y;
         }
+      }
+
+      // 重心の計算と表示
+      function calcCenterOfGravity() {
 
         var x0 = parseFloat(document.getElementById('x0').value);
         var x1 = parseFloat(document.getElementById('x1').value);
@@ -26,7 +32,7 @@
         var y1 = parseFloat(document.getElementById('y1').value);
         var y2 = parseFloat(document.getElementById('y2').value);
 
-        //g
+        // 重心の計算と表示
         const g = [];
         const gx = (x0 + x1 + x2) / 3;
         const gy = (y0 + y1 + y2) / 3;
@@ -36,7 +42,10 @@
       }
 
       // solveボタンにclickハンドラを設定
-      document.getElementById('Atk').addEventListener('click', atk);
+      document.getElementById('Atk').addEventListener('click', calcCenterOfGravity);
+
+      // 初期表示時の座標生成と表示
+      generateRandomPoints();
     });
   </script>
 </head>
