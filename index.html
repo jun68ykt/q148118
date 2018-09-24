@@ -12,14 +12,19 @@
     document.addEventListener('DOMContentLoaded', function() {
 
       // 乱数を使ってランダムな座標を生成
-      function generateRandomPoints() {
-        for (k = 0; k < 3; k++) {
+      function generateRandomPoints(numberOfPoints) {
+        return [...Array(numberOfPoints)].map(_ =>
+          new Point(Math.random() * 1000, Math.random() * 1000)
+        );
+      }
 
-          var point = new Point(Math.random() * 1000, Math.random() * 1000);
-
-          document.getElementById(`x${k}`).value = point.x;
-          document.getElementById(`y${k}`).value = point.y;
-        }
+      // 与えられた複数のPointの座標をinput要素のvalueに反映
+      function displayCoordinates(points) {
+        ['x', 'y'].forEach(function(axis) {
+          var inputs = document.getElementsByClassName(axis)
+          for (var i=0; i < inputs.length && i < points.length; i ++ )
+            inputs[i].value = points[i][axis];
+        });
       }
 
       // 重心の計算と表示
@@ -44,22 +49,25 @@
       // solveボタンにclickハンドラを設定
       document.getElementById('Atk').addEventListener('click', calcCenterOfGravity);
 
-      // 初期表示時の座標生成と表示
-      generateRandomPoints();
+      // 初期表示時のランダム座標生成
+      var randomPoints = generateRandomPoints(3);
+
+      // 座標の表示
+      displayCoordinates(randomPoints);
     });
   </script>
 </head>
 <body>
   <form id="fm">
     p0(
-    <input type="number" size="10" id="x0" placeholder="x0">,
-    <input type="number" size="10" id="y0" placeholder="y0">)<br>
+    <input type="number" size="10" id="x0" class="x" placeholder="x0">,
+    <input type="number" size="10" id="y0" class="y" placeholder="y0">)<br>
     p1(
-    <input type="number" size="10" id="x1" placeholder="x1">,
-    <input type="number" size="10" id="y1" placeholder="y1">)<br>
+    <input type="number" size="10" id="x1" class="x" placeholder="x1">,
+    <input type="number" size="10" id="y1" class="y" placeholder="y1">)<br>
     p2(
-    <input type="number" size="10" id="x2" placeholder="x2">,
-    <input type="number" size="10" id="y2" placeholder="y2">)<br>
+    <input type="number" size="10" id="x2" class="x" placeholder="x2">,
+    <input type="number" size="10" id="y2" class="y" placeholder="y2">)<br>
   </form>
   <input type="button" id="Atk" value="solve">
 </body>
