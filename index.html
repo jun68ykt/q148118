@@ -44,7 +44,8 @@
       function getCenterOfGravity(points) {
         if (!points || !points.length)
           return null;
-        else return new Point(
+
+        return new Point(
           points.reduce((sum,p) => sum + p.x, 0) / points.length,
           points.reduce((sum,p) => sum + p.y, 0) / points.length
         );
